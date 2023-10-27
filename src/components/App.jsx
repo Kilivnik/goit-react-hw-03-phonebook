@@ -31,11 +31,22 @@ class App extends Component {
   };
 
   addContact = data => {
-    return this.state.contacts.map(contact => contact.name).includes(data.name)
-      ? alert(`${data.name} is already in contacts`)
-      : this.setState(prevState => ({
-          contacts: [...prevState.contacts, data],
-        }));
+    const contact = {
+      id: nanoid(),
+      name: data.name,
+      number: data.number,
+    };
+    for (const item of this.state.contacts) {
+      if (item.name.toLowerCase() === data.name.toLowerCase()) {
+        alert(`${item.name} is already in contacts`);
+        return;
+      }
+    }
+    this.setState(prevState => {
+      return {
+        contacts: [contact, ...prevState.contacts],
+      };
+    });
   };
 
   // Реализуэм сохранение контактов в localStorage
